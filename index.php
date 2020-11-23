@@ -8,7 +8,9 @@ $app->config('debug', true);
 
 $app->get('/', function() {
     
-	echo "OK";
+	$sql = new Rsnunes\DB\Sql();
+	$results = $sql->select("SELECT * FROM tb_users");
+	echo 'ok'; // json_encode($results);
 
 });
 
