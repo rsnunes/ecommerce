@@ -2,13 +2,25 @@
 
 require_once("vendor/autoload.php");
 
-$app = new \Slim\Slim();
+use \Slim\Slim;
+use \Rsnunes\Page;
+use \Rsnunes\PageAdmin;
+
+$app = new Slim();
 
 $app->config('debug', true);
 
 $app->get('/', function() {
 
-	$page = new Rsnunes\Page();
+	$page = new Page();
+
+	$page->setTpl("index");
+
+});
+
+$app->get('/admin', function() {
+
+	$page = new PageAdmin();
 
 	$page->setTpl("index");
 

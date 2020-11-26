@@ -6,58 +6,65 @@ use Rain\Tpl;
 
 class Page {
 
-    private $tpl;
-    private $options = [];
-    private $defaults = [
-        "header" => true,
-        "footer" => true,
-        "data" => []
-    ];
-    private $projectRoute = "/ecommerce";
+	private $tpl;
+	private $options = [];
+	private $defaults = [
+		"header"=>true,
+		"footer"=>true,
+		"data"=>[]
+	];
+        private $projectRoute = "/ecommerce";
 
-    public function __construct($opts = array()) {
+	public function __construct($opts = array(), $tpl_dir = "/views/")
+	{
 
-        $this->options = array_merge($this->defaults, $opts);
+		$this->options = array_merge($this->defaults, $opts);
 
-        $config = array(
-            "base_url" => null,
-            "tpl_dir" => $_SERVER['DOCUMENT_ROOT'] . $this->projectRoute . "/views/",
-            "cache_dir" => $_SERVER['DOCUMENT_ROOT'] . $this->projectRoute . "/views-cache/",
-            "debug" => false
-        );
+		$config = array(
+		    "base_url"      => null,
+		    "tpl_dir"       => $_SERVER['DOCUMENT_ROOT']. $this->projectRoute . $tpl_dir,
+		    "cache_dir"     => $_SERVER['DOCUMENT_ROOT']. $this->projectRoute . "/views-cache/",
+		    "debug"         => false
+		);
 
-        Tpl::configure($config);
+                Tpl::configure( $config );
 
-        $this->tpl = new Tpl();
+		$this->tpl = new Tpl();
 
-        if ($this->options['data'])
-            $this->setData($this->options['data']);
+		if ($this->options['data']) $this->setData($this->options['data']);
 
-        if ($this->options['header'] === true)
-            $this->tpl->draw("header", false);
-    }
+		if ($this->options['header'] === true) $this->tpl->draw("header", false);
 
-    public function __destruct() {
+	}
 
-        if ($this->options['footer'] === true)
-            $this->tpl->draw("footer", false);
-    }
+	public function __destruct()
+	{
 
-    private function setData($data = array()) {
+		if ($this->options['footer'] === true) $this->tpl->draw("footer", false);
 
-        foreach ($data as $key => $val) {
+	}
 
-            $this->tpl->assign($key, $val);
-        }
-    }
+	private function setData($data = array())
+	{
 
-    public function setTpl($tplname, $data = array(), $returnHTML = false) {
+		foreach($data as $key => $val)
+		{
 
-        $this->setData($data);
+			$this->tpl->assign($key, $val);
 
-        return $this->tpl->draw($tplname, $returnHTML);
-    }
+		}
+
+	}
+
+	public function setTpl($tplname, $data = array(), $returnHTML = false)
+	{
+
+		$this->setData($data);
+
+		return $this->tpl->draw($tplname, $returnHTML);
+
+	}
 
 }
 
-?>
+ ?>
