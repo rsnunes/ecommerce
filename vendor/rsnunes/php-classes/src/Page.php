@@ -13,7 +13,6 @@ class Page {
 		"footer"=>true,
 		"data"=>[]
 	];
-        private $projectRoute = "/ecommerce";
 
 	public function __construct($opts = array(), $tpl_dir = "/views/")
 	{
@@ -22,8 +21,8 @@ class Page {
 
 		$config = array(
 		    "base_url"      => null,
-		    "tpl_dir"       => $_SERVER['DOCUMENT_ROOT']. $this->projectRoute . $tpl_dir,
-		    "cache_dir"     => $_SERVER['DOCUMENT_ROOT']. $this->projectRoute . "/views-cache/",
+		    "tpl_dir"       => $_SERVER['DOCUMENT_ROOT'] . $tpl_dir,
+		    "cache_dir"     => $_SERVER['DOCUMENT_ROOT'] . "/views-cache/",
 		    "debug"         => false
 		);
 
