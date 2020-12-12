@@ -3,6 +3,7 @@
 use \Rsnunes\Page;
 use \Rsnunes\Model\Product;
 use \Rsnunes\Model\Category;
+use \Rsnunes\Model\Cart;
 
 $app->get('/', function() {
     $products = Product::listAll();
@@ -52,11 +53,21 @@ $app->get("/products/:desurl", function($desurl){
     $product->getFromUrl($desurl);
 
     $page = new Page();
-    
+
     $page->setTpl("product-detail",[
         "product"=>$product->getValues(),
         "categories"=>$product->getCategories()
     ]);
+
+});
+
+$app->get("/cart", function(){
+
+    $cart = Cart::getFromSession();
+
+    $page = new Page();
+
+    $page->setTpl("cart");
 
 });
 
