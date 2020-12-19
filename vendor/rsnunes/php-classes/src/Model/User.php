@@ -8,7 +8,7 @@ use \Rsnunes\Mailer;
 
 class User extends Model
 {
-    
+
     const SESSION = "User";
     const SECRET = "HcodePhp7_Secret";
     const SECRET_IV = "HcodePhp7_Secret_IV";
@@ -37,21 +37,18 @@ class User extends Model
             !isset($_SESSION[User::SESSION]) ||
             !$_SESSION[User::SESSION] ||
             !(int) $_SESSION[User::SESSION]["iduser"] > 0
-        )
-        {
+        ){
             //Não está logado
             return false;
-        } else
-        {
+
+        } else {
 
             if ($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true)
             {
                 return true;
-            } else if ($inadmin === false)
-            {
+            } else if ($inadmin === false) {
                 return true;
-            } else
-            {
+            } else {
                 return false;
             }
         }
