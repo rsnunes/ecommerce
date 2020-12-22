@@ -6,6 +6,7 @@ use \Rsnunes\DB\Sql;
 use \Rsnunes\Model;
 use \Rsnunes\Model\Product;
 use \Rsnunes\Model\User;
+use \Rsnunes\Model\Address;
 
 class Cart extends Model
 {
@@ -280,6 +281,15 @@ class Cart extends Model
             $this->setvltotal(0.00);
         }
 
+    }
+
+    public static function validatePost($field, $msg, $location = '/checkout')
+    {
+        if(!isset($field) || $field === ''){
+            Address::setMsgErro($msg);
+            header("Location: /checkout");
+            exit;
+        }
     }
 }
 

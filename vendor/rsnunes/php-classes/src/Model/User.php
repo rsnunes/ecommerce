@@ -168,6 +168,7 @@ class User extends Model
             ":inadmin" => $this->getinadmin()
         ));
 
+v($results);exit;
         $this->setData($results[0]);
     }
 

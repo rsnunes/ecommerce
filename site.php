@@ -143,17 +143,65 @@ $app->get("/checkout", function(){
 
     User::verifyLogin(false);
 
+    $address = new Address();
     $cart = Cart::getFromSession();
 
-    $address = new Address();
+    if(isset($_GET['zipcode'])){
+        $_GET['zipcode'] = $cart->getzipcode();
+    }
+
+    if(isset($_GET['zipcode'])){
+        $address->loadFromCEP($_GET['zipcode']);
+
+        $cart->setdeszipcode($_GET['zipcode']);
+
+        $cart->save();
+
+        $cart->getCalculateTotal();
+    }
+
+    if(!$address->getdesaddress()) $address->setdesaddress('');
+    if(!$address->getdescomplement()) $address->setdescomplement('');
+    if(!$address->getdesdistrict()) $address->setdesdistrict('');
+    if(!$address->getdescity()) $address->setdescity('');
+    if(!$address->getdesstate()) $address->setdesstate('');
+    if(!$address->getdescountry()) $address->setdescountry('');
+    if(!$address->getdeszipcode()) $address->setdeszipcode('');
 
     $page = new Page();
 
     $page->setTpl("checkout", [
         "cart"=>$cart->getValues(),
-        "address"=>$address->getValues()
+        "address"=>$address->getValues(),
+        "products"=>$cart->getProducts(),
+        "error"=>Address::getMsgError()
     ]);
 
+});
+
+$app->post("/checkout", function(){
+
+    User::verifyLogin(false);
+
+    Cart::validatePost($_POST['zipcode'], $_POST['zipcode'], "Informe o CEP.");
+    Cart::validatePost($_POST['desaddress'], $_POST['desaddress'], "Informe o endereço.");
+    Cart::validatePost($_POST['desdistrict'], $_POST['desdistrict'], "Informe o bairro.");
+    Cart::validatePost($_POST['descity'], $_POST['descity'], "Informe a cidade.");
+    Cart::validatePost($_POST['desstate'], $_POST['desstate'], "Informe o estado.");
+    Cart::validatePost($_POST['descountry'], $_POST['descountry'], "Informe o país.");
+
+    $user = User::getFromSession();
+
+    $address = new Address();
+
+    $_POST['deszipcode'] = $_POST['zipcode'];
+    $_POST['idperson'] = $user->getidperson();
+
+    $address->setData($_POST);
+    $address->save();
+
+    header("Location: /order");
+    exit;
 });
 
 $app->get("/login", function(){
